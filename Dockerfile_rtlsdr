@@ -1,0 +1,25 @@
+FROM linarotechnologies/rtl-sdr:latest
+FROM ubuntu:18.04
+COPY . /app
+WORKDIR /app
+# Update and override policy output
+
+#RUN sed -i "s/^exit 101$/exit 0/" /usr/sbin/policy-rc.d
+
+
+RUN  apt-get update
+RUN  apt-get install -y gqrx-sdr
+
+
+
+# Install base packages
+RUN apt-get install -y python-pip python-dev
+
+
+RUN  python setup.py install
+
+
+COPY setup.py /app
+EXPOSE 8080 8081
+
+ENTRYPOINT ["shinysdr", "config"]
